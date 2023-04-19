@@ -1,4 +1,3 @@
-#define CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 int get_cycle_number(int n)
 {
