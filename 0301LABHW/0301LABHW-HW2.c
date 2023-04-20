@@ -1,41 +1,42 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <stdlib.h>
-void pick(int n, int* bucket, int bucketSize, int k)
+
+void pick(char* signs, int n, int* bucket, int bucketSize, int k)
 {
-	int i, lastIndex, smallest, total = 0;
+	int i, lastIndex;
+	int total = 0;
 
 	if (k == 0) {
 		for (i = 0; i < bucketSize; i++) {
-			if (bucket[i] == 0) {
-				printf("+%d", i + 1);
+			printf("%c ", signs[bucket[i]]);
+			printf("%d ", i + 1);
+
+			if (signs[bucket[i]] == '+')
 				total += (i + 1);
-			}
-			else {
-				printf("-%d", i + 1);
+			else
 				total -= (i + 1);
-			}
 		}
-		printf(" = %d\n", total);
+		printf(" = %d", total);
+		printf("\n");
 		return;
 	}
-	lastIndex = bucketSize - k - 1;	//°¡Àå ÃÖ±Ù¿¡ »ÌÈù ¼ö°¡ ÀúÀåµÈ À§Ä¡ index
-	smallest = 0;
+	lastIndex = bucketSize - k - 1;
 
-	for (i = smallest; i < n; i++) {
+	for (i = 0; i < n; i++) {
 		bucket[lastIndex + 1] = i;
-		pick(n, bucket, bucketSize, k - 1);
+		pick(signs, n, bucket, bucketSize, k - 1);
 	}
 }
 
 int main()
 {
+	char signs[] = "+-";
+	int bucket[2];
 	int num;
-	int* bucket;
+	printf("ìž…ë ¥: ");
 	scanf("%d", &num);
-	bucket = (int*)malloc(sizeof(int) * num);
 
-	pick(2, bucket, num, num);
-	free(bucket);
+	pick(signs, 2, bucket, num, num);
+
 	return 0;
 }
