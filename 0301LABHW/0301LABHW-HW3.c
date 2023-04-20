@@ -1,38 +1,49 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-void pick(int* items, int n, int* bucket, int bucketSize, int k,int money) {
-	int lastIndex, i, smallest;
-	if (k == 0) {
-		if (money == 0) {
+#include <stdlib.h>
+void pick(int item[], int n, int* bucket, int bucketSize, int k)
+{
+	int i, lastIndex, smallest, sum = 0;
+	if (k == 0)
+	{
+		for (i = 0; i < bucketSize; i++) {
+			sum += item[bucket[i]]; //그 줄의 합 구하기
+		}
+		if (sum == (1000 * bucketSize))  //구해놓은 합이 입력값과 동일시
+		{
 			for (i = 0; i < bucketSize; i++) {
-				printf("%d ", items[bucket[i]]);
+				if (item[bucket[i]] == 0)   //0이면 출력X
+					continue;
+				printf("%d ", item[bucket[i]]); //아니면 출력
 			}
 			printf("\n");
 		}
+		sum = 0;
 		return;
 	}
 	lastIndex = bucketSize - k - 1;
-	if (bucketSize == k) {
+
+	if (bucketSize == k)
 		smallest = 0;
-	}
-	else {
+	else
 		smallest = bucket[lastIndex];
-	}
+
 	for (i = smallest; i < n; i++) {
 		bucket[lastIndex + 1] = i;
-		pick(items, n, bucket, bucketSize, k - 1, money - items[i]);
+		pick(item, n, bucket, bucketSize, k - 1);
 	}
 }
 
 int main(void) {
-	int items[] = { 10000,5000,1000 };
-	int bucket[6];
-
+	int item[] = { 0, 1000,5000,10000 };
 	int money;
+	printf("입력 : ");
 	scanf("%d", &money);
+	int num = money / 1000;
 
-	for (int i = 0; i <= 6; i++) {
-		pick(items, 3, bucket, i, i, money);
-	}
+	int* bucket = (int*)malloc(sizeof(int) * num);
+	pick(item, 4, bucket, num, num); // 중복포함
+
+	free(bucket);
 	return 0;
 }
